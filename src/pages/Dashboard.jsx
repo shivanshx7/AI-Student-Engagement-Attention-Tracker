@@ -28,7 +28,17 @@ export default function Dashboard({ onSelectStudent }) {
       setSentiments(sentimentsData);
       setLoading(false);
     };
+
     fetchData();
+
+    // Listen for sync completion to refresh UI
+    const handleSync = () => {
+      console.log("Sync event received in Dashboard, refreshing data...");
+      fetchData();
+    };
+    window.addEventListener('googleSheetsSynced', handleSync);
+    
+    return () => window.removeEventListener('googleSheetsSynced', handleSync);
   }, []);
 
   if (loading) {
